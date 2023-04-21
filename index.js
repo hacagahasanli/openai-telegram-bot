@@ -30,6 +30,34 @@ bot.start(async (ctx) => {
     });
 });
 
+bot.hears(/.*/, async (ctx) => {
+    try {
+        if (isGeneratingResponse) return;
+        isGeneratingResponse = true
+        if (!commands.includes(ctx.message?.text)) {
+            // Send a "typing" action to the user
+            await ctx.telegram.sendChatAction(ctx.chat.id, 'typing');
+            // Generate a response using the OpenAI GPT-3 API
+            const response = await openai.createCompletion({
+                model: "text-davinci-003",
+                prompt: ctx.message?.text,
+                temperature: 0,
+                max_tokens: 500,
+                top_p: 1,
+                frequency_penalty: 0.0,
+                presence_penalty: 0.0,
+            });
+
+            const text = response.data.choices[0];
+            await ctx.reply(text)
+            isGeneratingResponse = false;
+        } else {
+            await ctx.reply('You can"t answer with command');
+        }
+    } catch (err) {
+        console.log(err.message)
+    }
+});
 
 // Start the bot
 bot.launch();
