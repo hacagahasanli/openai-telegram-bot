@@ -18,8 +18,8 @@ bot.start(async (ctx) => {
         reply_markup: {
             inline_keyboard: [
                 [
-                    { text: "I wanna give question", callback_data: "0" },
-                    { text: "Translate word", callback_data: "0" }
+                    { text: "I wanna give question", callback_data: "question_answer" },
+                    { text: "Translate word", callback_data: "translate" }
                 ],
                 [
                     { text: "Voice Chat", callback_data: "0" },
@@ -30,7 +30,8 @@ bot.start(async (ctx) => {
     });
 });
 
-bot.hears(/.*/, async (ctx) => {
+
+const chatGBT = async (ctx) => {
     try {
         if (isGeneratingResponse) return;
         isGeneratingResponse = true
@@ -57,7 +58,39 @@ bot.hears(/.*/, async (ctx) => {
     } catch (err) {
         console.log(err.message)
     }
-});
+}
+bot.action("question_answer", async (ctx) => {
+    await ctx.deleteMessage()
+    await ctx.reply('Yes I understood you', {
+        reply_markup: {
+            inline_keyboard: [
+                [
+                    { text: "Back to Menu", callback_data: "menu" },
+                ],
+            ]
+        }
+    });
+})
+
+bot.action("menu", async (ctx) => {
+    await ctx.deleteMessage()
+    await ctx.reply('Hey, I am an AI model. How can I help you?', {
+        reply_markup: {
+            inline_keyboard: [
+                [
+                    { text: "I wanna give question", callback_data: "question_answer" },
+                    { text: "Translate word", callback_data: "translate" }
+                ],
+                [
+                    { text: "Voice Chat", callback_data: "0" },
+                    { text: "Telegram message", callback_data: "0" }
+                ]
+            ]
+        }
+    });
+})
+
+bot.hears(/.*/, chatGBT);
 
 // Start the bot
 bot.launch();
