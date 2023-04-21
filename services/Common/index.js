@@ -27,6 +27,10 @@ class Common {
         }
 
     }
+    async chatAction({ ctx, type }) {
+        await ctx.telegram.sendChatAction(ctx.chat.id, type);
+    }
 }
 
 export default new Common()
+export { Common }
