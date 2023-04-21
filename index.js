@@ -1,6 +1,7 @@
 import { Telegraf } from "telegraf"
 import { Configuration, OpenAIApi } from "openai"
-import axios from "axios";
+import Common from "./services/Common/index.js";
+
 import { config } from "dotenv";
 config()
 
@@ -34,7 +35,7 @@ const chatGBT = async (ctx) => {
     await ctx.reply(text)
 }
 const createImage = async (ctx) => {
-    await ctx.telegram.sendChatAction(ctx.chat.id, 'typing');
+    await ctx.telegram.sendChatAction(ctx.chat.id, 'upload_photo');
     try {
         const response = await openai.createImage({
             prompt: ctx.message?.text,
@@ -43,19 +44,13 @@ const createImage = async (ctx) => {
         })
 
         const imageUrls = response.data.data;
-        imageUrls.map(async ({ url }, index) => {
+        imageUrls.map(async ({ url }) => {
             await ctx.replyWithPhoto({ url: url })
-            await ctx.reply("Example " + (index + 1))
         })
     } catch (error) {
         console.error(error, "ERROR DALL-E");
     }
 };
-
-bot.use((ctx, next) => {
-    ctx.state.hasMenu = true;
-    return next();
-});
 
 bot.start(async (ctx) => {
     if (!menuIsOpened || ctx.startPayload) {
@@ -80,29 +75,9 @@ bot.start(async (ctx) => {
     }
 });
 
-const backToMenuTab = async (ctx, currPage) => {
-    await ctx.reply(`Welcome to ${currPage}`, {
-        reply_markup: {
-            inline_keyboard: [
-                [
-                    { text: "Back to Menu", callback_data: "menu" },
-                ],
-            ]
-        }
-    })
-}
+bot.action("generate_image", (ctx) => Common.btnAction({ ctx, name: "DALL-E" }))
 
-bot.action("generate_image", async (ctx) => {
-    await ctx.deleteMessage()
-    currentSelectedBot = "DALL-E"
-    await backToMenuTab(ctx, "DALL-E");
-})
-
-bot.action("question_answer", async (ctx) => {
-    await ctx.deleteMessage()
-    currentSelectedBot = "ChatGBT"
-    await backToMenuTab(ctx, "ChatGBT");
-})
+bot.action("question_answer", (ctx) => Common.btnAction({ ctx, name: "ChatGBT" }))
 
 bot.action("menu", async (ctx) => {
     await ctx.deleteMessage()
@@ -126,7 +101,8 @@ bot.hears(/.*/, async (ctx) => {
         if (isGeneratingResponse) return;
         isGeneratingResponse = true
         if (!commands.includes(ctx.message?.text)) {
-            switch (currentSelectedBot) {
+            isGeneratingResponse = false;
+            switch (Common.currentSelectedBot) {
                 case "ChatGBT":
                     chatGBT(ctx);
                     break;
@@ -134,7 +110,6 @@ bot.hears(/.*/, async (ctx) => {
                     createImage(ctx);
                     break;
             }
-            isGeneratingResponse = false;
         } else {
             await ctx.reply('You can"t answer with command');
         }
