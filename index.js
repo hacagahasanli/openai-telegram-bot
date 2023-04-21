@@ -1,7 +1,7 @@
 import { Telegraf } from "telegraf"
 import { Configuration, OpenAIApi } from "openai"
 import { config } from "dotenv";
-import { Common, ChatGBT } from "./services/index.js";
+import { Common, ChatGBT, DALL_E } from "./services/index.js";
 config()
 
 const bot = new Telegraf(process.env.TELEGRAF_TOKEN, { polling: true })
@@ -14,24 +14,6 @@ const commands = ['/start', "/help"]
 
 let isGeneratingResponse = false;
 let menuIsOpened = false;
-
-const createImage = async (ctx) => {
-    await ctx.telegram.sendChatAction(ctx.chat.id, 'upload_photo');
-    try {
-        const response = await openai.createImage({
-            prompt: ctx.message?.text,
-            n: 2,
-            size: "256x256",
-        })
-
-        const imageUrls = response.data.data;
-        imageUrls.map(async ({ url }) => {
-            await ctx.replyWithPhoto({ url: url })
-        })
-    } catch (error) {
-        console.error(error, "ERROR DALL-E");
-    }
-};
 
 bot.start(async (ctx) => {
     if (!menuIsOpened || ctx.startPayload) {
@@ -88,7 +70,7 @@ bot.hears(/.*/, async (ctx) => {
                     ChatGBT.callAI({ ctx, openai });
                     break;
                 case "DALL-E":
-                    createImage(ctx);
+                    DALL_E.callAI({ ctx, openai });
                     break;
             }
         } else {
