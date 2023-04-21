@@ -2,6 +2,7 @@ import { Telegraf } from "telegraf"
 import { Configuration, OpenAIApi } from "openai"
 import { config } from "dotenv";
 import { Common, ChatGBT, DALL_E } from "./services/index.js";
+import { generateInlineKeyboard } from "./helpers/index.js";
 config()
 
 const bot = new Telegraf(process.env.TELEGRAF_TOKEN, { polling: true })
@@ -17,25 +18,10 @@ let menuIsOpened = false;
 
 bot.start(async (ctx) => {
     if (!menuIsOpened || ctx.startPayload) {
-        await ctx.reply('Hey, I am an AI model. How can I help you?', {
-            reply_markup: {
-                inline_keyboard: [
-                    [
-                        { text: "I wanna give question", callback_data: "question_answer" },
-                        { text: "Generate Image", callback_data: "generate_image" }
-                    ],
-                    [
-                        { text: "Voice Chat", callback_data: "0" },
-                        { text: "Telegram message", callback_data: "0" }
-                    ]
-                ]
-            }
-        });
-        menuIsOpened = true
+        await ctx.reply('Hey, I am an AI model. How can I help you?', generateInlineKeyboard("menu"));
+        return menuIsOpened = true
     }
-    else {
-        await ctx.reply("You have already opened menu")
-    }
+    await ctx.reply("You have already opened menu")
 });
 
 bot.action("generate_image", (ctx) => Common.btnAction({ ctx, name: "DALL-E" }))
@@ -43,6 +29,7 @@ bot.action("generate_image", (ctx) => Common.btnAction({ ctx, name: "DALL-E" }))
 bot.action("question_answer", (ctx) => Common.btnAction({ ctx, name: "ChatGBT" }))
 
 bot.action("menu", async (ctx) => {
+    Common.currentSelectedBot = ""
     await ctx.deleteMessage()
     await ctx.reply('Hey, I am an AI model. How can I help you?', {
         reply_markup: {
@@ -72,6 +59,8 @@ bot.hears(/.*/, async (ctx) => {
                 case "DALL-E":
                     DALL_E.callAI({ ctx, openai });
                     break;
+                default:
+                    await ctx.reply('You did not choose any AI')
             }
         } else {
             await ctx.reply('You can"t answer with command');

@@ -1,3 +1,4 @@
+import { generateInlineKeyboard } from "../../helpers/index.js";
 class Common {
     constructor() {
         this.currentSelectedBot = ""
@@ -29,6 +30,10 @@ class Common {
     }
     async chatAction({ ctx, type }) {
         await ctx.telegram.sendChatAction(ctx.chat.id, type);
+    }
+    async startMenuReply({ ctx }) {
+        await ctx.deleteMessage()
+        await ctx.reply('Hey, I am an AI model. How can I help you?', generateInlineKeyboard("menu"));
     }
 }
 
