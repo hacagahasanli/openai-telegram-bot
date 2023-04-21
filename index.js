@@ -12,22 +12,34 @@ let isGeneratingResponse = false;
 const openai = new OpenAIApi(configuration);
 
 const commands = ['/start', "/help"]
+let menuIsOpened = false
+
+bot.use((ctx, next) => {
+    ctx.state.hasMenu = true;
+    return next();
+});
 
 bot.start(async (ctx) => {
-    await ctx.reply('Hey, I am an AI model. How can I help you?', {
-        reply_markup: {
-            inline_keyboard: [
-                [
-                    { text: "I wanna give question", callback_data: "question_answer" },
-                    { text: "Translate word", callback_data: "translate" }
-                ],
-                [
-                    { text: "Voice Chat", callback_data: "0" },
-                    { text: "Telegram message", callback_data: "0" }
+    if (!menuIsOpened) {
+        await ctx.reply('Hey, I am an AI model. How can I help you?', {
+            reply_markup: {
+                inline_keyboard: [
+                    [
+                        { text: "I wanna give question", callback_data: "question_answer" },
+                        { text: "Translate word", callback_data: "translate" }
+                    ],
+                    [
+                        { text: "Voice Chat", callback_data: "0" },
+                        { text: "Telegram message", callback_data: "0" }
+                    ]
                 ]
-            ]
-        }
-    });
+            }
+        });
+        menuIsOpened = true
+    }
+    else {
+        await ctx.reply("You have already has a opened menu")
+    }
 });
 
 
