@@ -4,7 +4,7 @@ export const menu = [
         { text: "Image generator bot", callback_data: "generate_image" }
     ],
     [
-        { text: "Voice Chat", callback_data: "0" },
+        { text: "Write Code into application", callback_data: "code_writer" },
         { text: "Telegram message", callback_data: "0" }
     ]
 ]
