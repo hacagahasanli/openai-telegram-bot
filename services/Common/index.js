@@ -5,6 +5,7 @@ class Common {
     constructor() {
         this.currentSelectedBot = ""
         this.isResGenerating = false;
+        this.message = ""
     }
     async btnAction({ ctx, name }) {
         try {
@@ -12,13 +13,15 @@ class Common {
             this.currentSelectedBot = name
             await this.backToMenuTab(ctx, name);
         } catch (err) {
+            console.log(err.message)
             await ctx.reply(WARNING.WENT_WRONG)
         }
     }
     async backToMenuTab(ctx, currPage) {
         try {
-            await ctx.reply(`Welcome to ${currPage}`, generateInlineKeyboard("backToMenu"))
+            this.message = await ctx.reply(`Welcome to ${currPage}`, generateInlineKeyboard("backToMenu"))
         } catch (err) {
+            console.log(err.message)
             await ctx.reply(WARNING.WENT_WRONG)
         }
     }
@@ -26,7 +29,7 @@ class Common {
         await ctx.telegram.sendChatAction(ctx.chat.id, type);
     }
     async startMenuReply({ ctx, btnListType = "menu" }) {
-        await ctx.reply(INFO.AI_MODEL_TEXT, generateInlineKeyboard(btnListType));
+        this.message = await ctx.reply(INFO.AI_MODEL_TEXT, generateInlineKeyboard(btnListType));
     }
 }
 

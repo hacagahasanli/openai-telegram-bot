@@ -1,5 +1,5 @@
 import { commands, SERVICES_NAME, WARNING, INFO } from "../../constants/index.js";
-import { DALL_E, ChatGBT, Common } from "../index.js";
+import { DALL_E, ChatGBT, Common, CODEX } from "../index.js";
 import { config } from "dotenv";
 config()
 
@@ -16,6 +16,9 @@ class OnBot {
                         break;
                     case SERVICES_NAME.DALLE:
                         DALL_E.callAI({ ctx });
+                        break;
+                    case SERVICES_NAME.CODEX:
+                        CODEX.callAI({ ctx });
                         break;
                     default:
                         await ctx.reply(INFO.UNKNOWN_AI)

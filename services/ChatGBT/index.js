@@ -1,7 +1,12 @@
 import { WARNING } from "../../constants/index.js";
-class ChatGBT {
-    async callAI({ openai, ctx }) {
+import Common, { Common as CommonClass } from "../Common/index.js";
+import { openai } from "../../config/index.js";
+import { generateInlineKeyboard } from "../../helpers/index.js";
+class ChatGBT extends CommonClass {
+    async callAI({ ctx }) {
         try {
+            let timeoutInstance;
+            clearTimeout(timeoutInstance)
             this.chatAction({ ctx, type: "typing" })
             const response = await openai.createCompletion({
                 model: "text-davinci-003",
@@ -14,8 +19,17 @@ class ChatGBT {
             });
 
             const text = response.data.choices[0];
+            console.log(Common.message, "COMMONG MESSAGE")
+            if (text) {
+                timeoutInstance = setTimeout(async () => {
+                    // await ctx.reply(text)
+                    await ctx.telegram.deleteMessage(Common.message.chat.id, Common.message.message_id);
+                    await ctx.telegram.sendMessage(Common.message.chat.id, 'Welcome to ChatGBT', generateInlineKeyboard("backToMenu"));
+                }, 10000)
+            }
             await ctx.reply(text)
         } catch (err) {
+            console.log(err.message)
             await ctx.reply(WARNING.WRONG_RESPONSE)
         }
     }

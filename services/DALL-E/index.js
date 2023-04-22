@@ -16,6 +16,7 @@ class DALL_E extends Common {
             imageUrls.map(async ({ url }) => await ctx.replyWithPhoto({ url }))
 
         } catch (error) {
+            console.log(err.message)
             await ctx.reply(WARNING.WRONG_RESPONSE)
         }
     }
