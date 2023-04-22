@@ -1,7 +1,8 @@
 import { Common } from "../Common/index.js";
+import { openai } from "../../config/index.js";
 
 class DALL_E extends Common {
-    async callAI({ openai, ctx }) {
+    async callAI({ ctx }) {
         try {
             this.chatAction({ ctx, type: "upload_photo" })
             const response = await openai.createImage({
@@ -11,12 +12,10 @@ class DALL_E extends Common {
             })
 
             const imageUrls = response.data.data;
-            imageUrls.map(async ({ url }) => {
-                await ctx.replyWithPhoto({ url })
-            })
+            imageUrls.map(async ({ url }) => await ctx.replyWithPhoto({ url }))
 
         } catch (error) {
-            await ctx.reply("Something went wront, while getting response!")
+            await ctx.reply("Something went wrong, while getting response!")
         }
     }
 }

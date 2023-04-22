@@ -1,7 +1,7 @@
 export const menu = [
     [
-        { text: "I wanna give question", callback_data: "question_answer" },
-        { text: "Generate Image", callback_data: "generate_image" }
+        { text: "Question answering bot", callback_data: "question_answer" },
+        { text: "Image generator bot", callback_data: "generate_image" }
     ],
     [
         { text: "Voice Chat", callback_data: "0" },

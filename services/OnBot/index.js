@@ -1,13 +1,7 @@
 import { commands } from "../../constants/index.js";
 import { DALL_E, ChatGBT } from "../index.js";
-import { Configuration, OpenAIApi } from "openai"
 import { config } from "dotenv";
 config()
-
-const configuration = new Configuration({
-    apiKey: process.env.API_KEY,
-});
-const openai = new OpenAIApi(configuration);
 
 class OnBot {
     async botHears({ ctx, Common }) {
@@ -16,18 +10,18 @@ class OnBot {
             Common.isResGenerating = true
 
             if (!commands.includes(ctx.message?.text)) {
+                console.log(Common.currentSelectedBot, "Common.currentSelectedBot")
                 switch (Common.currentSelectedBot) {
                     case "ChatGBT":
-                        ChatGBT.callAI({ ctx, openai });
+                        ChatGBT.callAI({ ctx });
                         break;
                     case "DALL-E":
-                        DALL_E.callAI({ ctx, openai });
+                        DALL_E.callAI({ ctx });
                         break;
                     default:
                         await ctx.reply('You did not choose any AI')
-
-                        Common.isResGenerating = false;
                 }
+                Common.isResGenerating = false;
             } else {
                 await ctx.reply('You can"t answer with command');
             }
