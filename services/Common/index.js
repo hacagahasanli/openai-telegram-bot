@@ -1,4 +1,5 @@
 import { generateInlineKeyboard } from "../../helpers/index.js";
+import { WARNING, INFO } from "../../constants/index.js";
 
 class Common {
     constructor() {
@@ -11,21 +12,21 @@ class Common {
             this.currentSelectedBot = name
             await this.backToMenuTab(ctx, name);
         } catch (err) {
-            await ctx.reply(`Eseflesme, just something went wrong`)
+            await ctx.reply(WARNING.WENT_WRONG)
         }
     }
     async backToMenuTab(ctx, currPage) {
         try {
             await ctx.reply(`Welcome to ${currPage}`, generateInlineKeyboard("backToMenu"))
         } catch (err) {
-            await ctx.reply(`Eseflesme, just something went wrong`)
+            await ctx.reply(WARNING.WENT_WRONG)
         }
     }
     async chatAction({ ctx, type }) {
         await ctx.telegram.sendChatAction(ctx.chat.id, type);
     }
     async startMenuReply({ ctx, btnListType = "menu" }) {
-        await ctx.reply('Hey, I am an AI model. How can I help you?', generateInlineKeyboard(btnListType));
+        await ctx.reply(INFO.AI_MODEL_TEXT, generateInlineKeyboard(btnListType));
     }
 }
 

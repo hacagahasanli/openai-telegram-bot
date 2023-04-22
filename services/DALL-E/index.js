@@ -1,5 +1,6 @@
 import { Common } from "../Common/index.js";
 import { openai } from "../../config/index.js";
+import { WARNING } from "../../constants/index.js";
 
 class DALL_E extends Common {
     async callAI({ ctx }) {
@@ -7,7 +8,7 @@ class DALL_E extends Common {
             this.chatAction({ ctx, type: "upload_photo" })
             const response = await openai.createImage({
                 prompt: ctx.message?.text,
-                n: 2,
+                n: 3,
                 size: "256x256",
             })
 
@@ -15,7 +16,7 @@ class DALL_E extends Common {
             imageUrls.map(async ({ url }) => await ctx.replyWithPhoto({ url }))
 
         } catch (error) {
-            await ctx.reply("Something went wrong, while getting response!")
+            await ctx.reply(WARNING.WRONG_RESPONSE)
         }
     }
 }

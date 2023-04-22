@@ -24,7 +24,7 @@ bot.action("menu", async (ctx) => {
     await Common.startMenuReply({ ctx });
 })
 
-bot.hears(/.*/, async (ctx) => OnBot.botHears({ ctx, Common }));
+bot.hears(/.*/, async (ctx) => OnBot.botHears({ ctx }));
 
 // Start the bot
 bot.launch();

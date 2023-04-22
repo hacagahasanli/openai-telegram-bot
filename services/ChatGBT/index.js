@@ -1,6 +1,5 @@
-import { Common } from "../Common/index.js";
-
-class ChatGBT extends Common {
+import { WARNING } from "../../constants/index.js";
+class ChatGBT {
     async callAI({ openai, ctx }) {
         try {
             this.chatAction({ ctx, type: "typing" })
@@ -17,7 +16,7 @@ class ChatGBT extends Common {
             const text = response.data.choices[0];
             await ctx.reply(text)
         } catch (err) {
-            await ctx.reply("Something went wront, while getting response!")
+            await ctx.reply(WARNING.WRONG_RESPONSE)
         }
     }
 }
