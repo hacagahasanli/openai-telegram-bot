@@ -6,6 +6,7 @@ class Common {
         this.currentSelectedBot = ""
         this.isResGenerating = false;
         this.message = ""
+        this.timeoutInstance = ''
     }
     async btnAction({ ctx, name }) {
         try {
@@ -30,6 +31,18 @@ class Common {
     }
     async startMenuReply({ ctx, btnListType = "menu" }) {
         this.message = await ctx.reply(INFO.AI_MODEL_TEXT, generateInlineKeyboard(btnListType));
+    }
+    async refreshButton({ text, Common, ctx }) {
+        try {
+            if (text) {
+                this.timeoutInstance = setTimeout(async () => {
+                    await ctx.telegram.deleteMessage(Common.message.chat.id, Common.message.message_id);
+                    await ctx.telegram.sendMessage(Common.message.chat.id, 'Welcome to ChatGBT', generateInlineKeyboard("backToMenu"));
+                }, 2000)
+            }
+        } catch (err) {
+            console.log(err)
+        }
     }
 }
 
