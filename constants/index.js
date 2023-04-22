@@ -9,6 +9,15 @@ export const menu = [
     ]
 ]
 
+const backToMenu = [
+    [
+        { text: "Back to Menu", callback_data: "menu" },
+    ],
+]
+
 export const buttonLists = {
-    "menu": menu
+    "menu": menu,
+    "backToMenu": backToMenu
 }
+
+export const commands = ['/start', "/help"]

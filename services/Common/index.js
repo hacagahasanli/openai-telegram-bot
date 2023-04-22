@@ -2,6 +2,7 @@ import { generateInlineKeyboard } from "../../helpers/index.js";
 class Common {
     constructor() {
         this.currentSelectedBot = ""
+        this.isResGenerating = false;
     }
     async btnAction({ ctx, name }) {
         try {
@@ -9,31 +10,21 @@ class Common {
             this.currentSelectedBot = name
             await this.backToMenuTab(ctx, name);
         } catch (err) {
-
+            await ctx.reply(`Eseflesme, just something went wrong`)
         }
     }
     async backToMenuTab(ctx, currPage) {
         try {
-            await ctx.reply(`Welcome to ${currPage}`, {
-                reply_markup: {
-                    inline_keyboard: [
-                        [
-                            { text: "Back to Menu", callback_data: "menu" },
-                        ],
-                    ]
-                }
-            })
+            await ctx.reply(`Welcome to ${currPage}`, generateInlineKeyboard("backToMenu"))
         } catch (err) {
-
+            await ctx.reply(`Eseflesme, just something went wrong`)
         }
-
     }
     async chatAction({ ctx, type }) {
         await ctx.telegram.sendChatAction(ctx.chat.id, type);
     }
-    async startMenuReply({ ctx }) {
-        await ctx.deleteMessage()
-        await ctx.reply('Hey, I am an AI model. How can I help you?', generateInlineKeyboard("menu"));
+    async startMenuReply({ ctx, btnListType = "menu" }) {
+        await ctx.reply('Hey, I am an AI model. How can I help you?', generateInlineKeyboard(btnListType));
     }
 }
 
