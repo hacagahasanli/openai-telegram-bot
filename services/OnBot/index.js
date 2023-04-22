@@ -1,5 +1,5 @@
-import { commands } from "../../constants/index.js";
-import { DALL_E, ChatGBT } from "../index.js";
+import { commands, SERVICES_NAME } from "../../constants/index.js";
+import { DALL_E, ChatGBT, Common } from "../index.js";
 import { config } from "dotenv";
 config()
 
@@ -10,12 +10,11 @@ class OnBot {
             Common.isResGenerating = true
 
             if (!commands.includes(ctx.message?.text)) {
-                console.log(Common.currentSelectedBot, "Common.currentSelectedBot")
                 switch (Common.currentSelectedBot) {
-                    case "ChatGBT":
+                    case SERVICES_NAME.ChatGBT:
                         ChatGBT.callAI({ ctx });
                         break;
-                    case "DALL-E":
+                    case SERVICES_NAME.DALLE:
                         DALL_E.callAI({ ctx });
                         break;
                     default:

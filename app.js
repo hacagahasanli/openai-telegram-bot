@@ -1,9 +1,8 @@
-import { Telegraf } from "telegraf"
 import { config } from "dotenv";
 import { Common, OnBot } from "./services/index.js";
+import { bot } from "./config/index.js"
+import { SERVICES_NAME } from "./constants/index.js"
 config()
-
-const bot = new Telegraf(process.env.TELEGRAF_TOKEN, { polling: true })
 
 let menuIsOpened = false;
 
@@ -15,9 +14,9 @@ bot.start(async (ctx) => {
     await ctx.reply("You have already opened menu")
 });
 
-bot.action("generate_image", (ctx) => Common.btnAction({ ctx, name: "DALL-E" }))
+bot.action("generate_image", (ctx) => Common.btnAction({ ctx, name: SERVICES_NAME.DALLE }))
 
-bot.action("question_answer", (ctx) => Common.btnAction({ ctx, name: "ChatGBT" }))
+bot.action("question_answer", (ctx) => Common.btnAction({ ctx, name: SERVICES_NAME.ChatGBT }))
 
 bot.action("menu", async (ctx) => {
     Common.currentSelectedBot = ""

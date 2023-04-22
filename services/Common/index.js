@@ -1,5 +1,4 @@
 import { generateInlineKeyboard } from "../../helpers/index.js";
-import { Redis } from "ioredis";
 
 class Common {
     constructor() {
