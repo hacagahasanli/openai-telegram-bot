@@ -33,10 +33,3 @@ bot.hears(/.*/, async (ctx) => OnBot.botHears({ ctx }));
 
 // Start the bot
 bot.launch();
-
-// Assume that the last message sent by the bot has a single inline keyboard with multiple buttons
-// let keyboard = ctx.update.callback_query.message.reply_markup.inline_keyboard;
-// let lastIndex = keyboard.length - 1;
-// keyboard[lastIndex].splice(-1, 1); // Remove the last button
-// keyboard[lastIndex].push({ text: 'New Button', callback_data: 'new_button' }); // Add a new button
-// await ctx.editMessageReplyMarkup({ inline_keyboard: keyboard });

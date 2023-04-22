@@ -11,6 +11,7 @@ class Common {
     async btnAction({ ctx, name }) {
         try {
             await ctx.deleteMessage()
+            clearTimeout(this.timeoutInstance)
             this.currentSelectedBot = name
             await this.backToMenuTab(ctx, name);
         } catch (err) {
