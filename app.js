@@ -29,6 +29,8 @@ bot.action("menu", async (ctx) => {
     await Common.startMenuReply({ ctx });
 })
 
+console.log("ERROR FIX")
+
 bot.hears(/.*/, async (ctx) => OnBot.botHears({ ctx }));
 
 // Start the bot
