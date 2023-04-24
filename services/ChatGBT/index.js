@@ -17,7 +17,7 @@ class ChatGBT extends CommonClass {
             });
 
             const text = response.data.choices[0];
-            Common.refreshButton({ text,  Common, ctx })
+            Common.refreshButton({ data:text,  Common, ctx })
             await ctx.reply(text)
         } catch (err) {
             console.log(err.message)

@@ -1,11 +1,10 @@
 export const menu = [
     [
-        { text: "Question answering bot", callback_data: "question_answer" },
-        { text: "Image generator bot", callback_data: "generate_image" }
+        { text: "Question Answering AI", callback_data: "question_answer" },
     ],
     [
-        { text: "Write Code into application", callback_data: "code_writer" },
-        { text: "Telegram message", callback_data: "0" }
+        { text: "Image generator AI", callback_data: "generate_image" },
+        { text: "Write Code AI", callback_data: "code_writer" },
     ]
 ]
 
