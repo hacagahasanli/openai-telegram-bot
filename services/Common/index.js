@@ -1,5 +1,5 @@
 import { generateInlineKeyboard } from "../../helpers/index.js";
-import { WARNING, INFO } from "../../constants/index.js";
+import { warning, INFO } from "../../constants/index.js";
 
 class Common {
     constructor() {
@@ -16,7 +16,7 @@ class Common {
             await this.backToMenuTab(ctx, name);
         } catch (err) {
             console.log(err.message)
-            await ctx.reply(WARNING.WENT_WRONG)
+            await ctx.reply(warning.WENT_WRONG)
         }
     }
     async backToMenuTab(ctx, currPage) {
@@ -24,7 +24,7 @@ class Common {
             this.message = await ctx.reply(`Welcome to ${currPage}`, generateInlineKeyboard("backToMenu"))
         } catch (err) {
             console.log(err.message)
-            await ctx.reply(WARNING.WENT_WRONG)
+            await ctx.reply(warning.WENT_WRONG)
         }
     }
     async chatAction({ ctx, type }) {

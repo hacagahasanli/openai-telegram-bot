@@ -1,4 +1,4 @@
-import { commands, SERVICES_NAME, WARNING, INFO } from "../../constants/index.js";
+import { commands, servicesName, warning, INFO } from "../../constants/index.js";
 import { DALL_E, ChatGBT, Common, CODEX } from "../index.js";
 import { config } from "dotenv";
 config()
@@ -11,13 +11,13 @@ class OnBot {
 
             if (!commands.includes(ctx.message?.text)) {
                 switch (Common.currentSelectedBot) {
-                    case SERVICES_NAME.ChatGBT:
+                    case servicesName.ChatGBT:
                         ChatGBT.callAI({ ctx });
                         break;
-                    case SERVICES_NAME.DALLE:
+                    case servicesName.DALLE:
                         DALL_E.callAI({ ctx });
                         break;
-                    case SERVICES_NAME.CODEX:
+                    case servicesName.CODEX:
                         CODEX.callAI({ ctx });
                         break;
                     default:
@@ -25,11 +25,11 @@ class OnBot {
                 }
                 Common.isResGenerating = false;
             } else {
-                await ctx.reply(WARNING.WENT_WRONG);
+                await ctx.reply(warning.WENT_WRONG);
             }
         } catch (err) {
             console.log(err)
-            await ctx.reply(WARNING.CHECK_ANOTHER)
+            await ctx.reply(warning.CHECK_ANOTHER)
         }
     }
 }

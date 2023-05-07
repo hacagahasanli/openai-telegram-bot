@@ -1,4 +1,4 @@
-export const WARNING = {
+export const warning = {
     MENU: "You have already opened menu",
     WENT_WRONG: "Eseflesme, just something went wrong",
     WRONG_RESPONSE: "Something went wrong, while getting response!",

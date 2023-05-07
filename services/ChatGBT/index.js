@@ -1,4 +1,4 @@
-import { WARNING } from "../../constants/index.js";
+import { warning } from "../../constants/index.js";
 import Common, { Common as CommonClass } from "../Common/index.js";
 import { openai } from "../../config/index.js";
 class ChatGBT extends CommonClass {
@@ -21,7 +21,7 @@ class ChatGBT extends CommonClass {
             await ctx.reply(text)
         } catch (err) {
             console.log(err.message)
-            await ctx.reply(WARNING.WRONG_RESPONSE)
+            await ctx.reply(warning.WRONG_RESPONSE)
         }
     }
 }

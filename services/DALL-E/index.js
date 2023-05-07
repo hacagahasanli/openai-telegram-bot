@@ -1,6 +1,6 @@
 import Common, { Common as CommonClass } from "../Common/index.js";
 import { openai } from "../../config/index.js";
-import { WARNING } from "../../constants/index.js";
+import { warning } from "../../constants/index.js";
 
 class DALL_E extends CommonClass {
     async callAI({ ctx }) {
@@ -18,8 +18,8 @@ class DALL_E extends CommonClass {
             Common.refreshButton({ data: imageUrls, Common, ctx })
 
         } catch (error) {
-            console.log(err.message)
-            await ctx.reply(WARNING.WRONG_RESPONSE)
+            console.log(error.message)
+            await ctx.reply(warning.WRONG_RESPONSE)
         }
     }
 }
