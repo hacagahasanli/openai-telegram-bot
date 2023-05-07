@@ -1,4 +1,4 @@
-export const SERVICES_NAME = {
+export const servicesName = {
     DALLE: "DALL-E",
     ChatGBT: "ChatGBT",
     CODEX: "CODEX"

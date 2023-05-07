@@ -1,35 +1,34 @@
 import { config } from "dotenv";
 import { Common, OnBot } from "./services/index.js";
 import { bot } from "./config/index.js"
-import { SERVICES_NAME, WARNING } from "./constants/index.js"
+import { servicesName, warning, choiceIs } from "./constants/index.js"
 config()
 
 let menuIsOpened = false;
+const { IMAGE_GENERATOR, QNA, CODE_WRITER, MENU } = choiceIs
+const { DALLE, ChatGBT, CODEX } = servicesName
 
 bot.start(async (ctx) => {
     if (!menuIsOpened || ctx.startPayload) {
         ctx.state.openedMenu = true
         await Common.startMenuReply({ ctx });
-        console.log(ctx.state.openedMenu)
         return menuIsOpened = true
     }
 
-    await ctx.reply(WARNING.MENU)
+    await ctx.reply(warning.MENU)
 });
 
-bot.action("generate_image", (ctx) => Common.btnAction({ ctx, name: SERVICES_NAME.DALLE }))
+bot.action(IMAGE_GENERATOR, (ctx) => Common.btnAction({ ctx, name: DALLE }))
 
-bot.action("question_answer", (ctx) => Common.btnAction({ ctx, name: SERVICES_NAME.ChatGBT }))
+bot.action(QNA, (ctx) => Common.btnAction({ ctx, name: ChatGBT }))
 
-bot.action("code_writer", (ctx) => Common.btnAction({ ctx, name: SERVICES_NAME.CODEX }))
+bot.action(CODE_WRITER, (ctx) => Common.btnAction({ ctx, name: CODEX }))
 
-bot.action("menu", async (ctx) => {
+bot.action(MENU, async (ctx) => {
     Common.currentSelectedBot = ""
     await ctx.deleteMessage()
     await Common.startMenuReply({ ctx });
 })
-
-console.log("ERROR FIX")
 
 bot.hears(/.*/, async (ctx) => OnBot.botHears({ ctx }));
 
